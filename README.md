@@ -7,6 +7,13 @@
 - 前端：React + Taro、Zustand、Tailwind CSS、Lucide React、React Router DOM
 - 后端：Go 1.21、Gin、GORM、MySQL/SQLite、Redis、JWT
 
+## 项目部分截图
+<img width="375" height="667" alt="image" src="https://github.com/user-attachments/assets/891b5297-a837-4992-afbf-0d0355354c6d" />
+<img width="375" height="667" alt="image" src="https://github.com/user-attachments/assets/4d0f3d75-7069-4948-8f12-92883b412613" />
+<img width="375" height="667" alt="image" src="https://github.com/user-attachments/assets/db584467-0883-4cad-a1c5-431de924795c" />
+<img width="375" height="667" alt="image" src="https://github.com/user-attachments/assets/a8237edf-2f28-479e-ad58-2c31542a6edb" />
+
+
 ## 功能特性
 
 - 📱 移动端优化界面
