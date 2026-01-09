@@ -93,7 +93,7 @@ REDIS_PASSWORD=
 pnpm run dev
 ```
 
-应用将在 `http://localhost:5173` 启动。
+应用将在 `http://localhost:4567` 启动。
 
 ### 生产环境构建
 
