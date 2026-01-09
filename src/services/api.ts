@@ -48,6 +48,7 @@ interface Record {
   result: string
   confidence: number
   created_at: string
+  raw_response?: string
 }
 
 // 获取token

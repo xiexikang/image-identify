@@ -71,7 +71,7 @@ export default function ProfilePage() {
           </div>
 
           <button
-            className="w-full py-3 rounded-lg hover:bg-red-600 flex items-center justify-center gap-2"
+            className="w-full py-3 rounded-lg flex items-center justify-center gap-2"
             onClick={handleLogout}
           >
             <LogOut size={18} />

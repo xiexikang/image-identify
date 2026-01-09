@@ -11,6 +11,7 @@ interface RecognitionRecord {
   result: string
   confidence: number
   created_at: string
+  raw_response?: string
 }
 
 const typeNames: Record<string, string> = {
@@ -87,35 +88,48 @@ export default function HistoryPage() {
   const handleView = (record: RecognitionRecord) => {
     const imageUrl = resolveImageUrl(record.image_url)
     const Detail = ({ r, url }: { r: RecognitionRecord; url: string }) => {
-      const [res, setRes] = useState<{
-        keyword: string
-        name?: string
-        score: number
-        description: string
-        results?: Array<{ keyword?: string; name?: string; score: number; year?: string; root?: string }>
-      } | null>(null)
+      const [candidates, setCandidates] = useState<Array<{ keyword?: string; name?: string; score: number; year?: string; root?: string }>>([])
+      const [triedAnalyze, setTriedAnalyze] = useState(false)
+
+      useEffect(() => {
+        try {
+          if (r.raw_response) {
+            const parsed = JSON.parse(r.raw_response)
+            const arr = Array.isArray(parsed?.result) ? parsed.result : []
+            setCandidates(arr)
+          } else {
+            setCandidates([])
+          }
+        } catch {
+          setCandidates([])
+        }
+      }, [r.raw_response])
 
       useEffect(() => {
         const run = async () => {
-          try {
-            const resp = await fetch(url)
-            const blob = await resp.blob()
-            const base64 = await new Promise<string>((resolve) => {
-              const reader = new FileReader()
-              reader.onloadend = () => {
-                const s = String(reader.result || '')
-                resolve(s.includes(',') ? s.split(',')[1] : s)
-              }
-              reader.readAsDataURL(blob)
-            })
-            const out = await recognitionAPI.analyzeImage(base64, r.type)
-            setRes(out)
-          } catch {
-            setRes(null)
+          if (candidates.length === 0 && !triedAnalyze) {
+            setTriedAnalyze(true)
+            try {
+              const resp = await fetch(url)
+              const blob = await resp.blob()
+              const base64 = await new Promise<string>((resolve) => {
+                const reader = new FileReader()
+                reader.onloadend = () => {
+                  const s = String(reader.result || '')
+                  resolve(s.includes(',') ? s.split(',')[1] : s)
+                }
+                reader.readAsDataURL(blob)
+              })
+              const out = await recognitionAPI.analyzeImage(base64, r.type)
+              const arr = (out as unknown as { results?: Array<{ keyword?: string; name?: string; score: number; year?: string; root?: string }> }).results || []
+              setCandidates(arr)
+            } catch {
+              // ignore
+            }
           }
         }
         run()
-      }, [url, r.type])
+      }, [candidates.length, triedAnalyze, url, r.type])
 
       const v = r.confidence <= 1 ? r.confidence * 100 : r.confidence
       return (
@@ -130,11 +144,11 @@ export default function HistoryPage() {
             <span className="text-sm text-pink-600">{v.toFixed(1)}%</span>
           </div>
           <p className="text-xs text-gray-500">{typeNames[r.type] || '未知类型'} • {formatDate(r.created_at)}</p>
-          {Array.isArray(res?.results) && res!.results!.length > 1 ? (
+          {Array.isArray(candidates) && candidates.length > 1 ? (
             <div>
               <p className="text-sm text-gray-600 mb-2">候选结果：</p>
               <div className="space-y-2">
-                {res!.results!.map((item, idx) => (
+                {candidates.map((item, idx) => (
                   <div key={idx} className="flex items-center justify-between py-1">
                     <div className="text-sm">
                       <span className="font-medium">{item.keyword || item.name}</span>

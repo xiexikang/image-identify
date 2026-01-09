@@ -156,12 +156,18 @@ func analyzeImageHandler(c *gin.Context) {
     if conf == 0 {
         conf = float64(top.Probability)
     }
+    var rawJSON string
+    if resp != nil {
+        if b, jerr := json.Marshal(resp); jerr == nil {
+            rawJSON = string(b)
+        }
+    }
     record := RecognitionRecord{
         UserID:      userID,
         Type:        req.Type,
         Result:      kw,
         Confidence:  conf,
-        RawResponse: fmt.Sprintf("%+v", top),
+        RawResponse: rawJSON,
         ImageURL:    imageURL,
     }
 

@@ -222,6 +222,6 @@ curl -X POST http://localhost:8082/api/recognize/analyze \
 4. **性能优化** - 图片懒加载和缓存策略
 5. **用户体验** - 加载状态、骨架屏等优化
 
-## 许可证
+## 许可证 License
 
-MIT License
+This project is licensed under the MIT License.
