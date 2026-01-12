@@ -7,6 +7,9 @@
 - 前端：React + Taro、Zustand、Tailwind CSS、Lucide React、React Router DOM
 - 后端：Go 1.21、Gin、GORM、MySQL/SQLite、Redis、JWT
 
+## 博客地址
+https://blog.csdn.net/weixin_42211816/article/details/156769470
+
 ## 项目部分截图
 <img width="375" height="667" alt="image" src="https://github.com/user-attachments/assets/891b5297-a837-4992-afbf-0d0355354c6d" />
 <img width="375" height="667" alt="image" src="https://github.com/user-attachments/assets/4d0f3d75-7069-4948-8f12-92883b412613" />
